@@ -5,8 +5,7 @@ from botocore.exceptions import NoCredentialsError
 import requests
 import base64
 import json
-from io import BytesIO
-import fitz
+
 
 # AWS S3 Configuration
 AWS_BUCKET_NAME = st.secrets['AWS_BUCKET_NAME']
