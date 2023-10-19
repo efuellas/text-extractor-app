@@ -71,7 +71,7 @@ def documentTextDetect(input_bucket, input_key, output_bucket=None):
         }
 
 
-def chat_with_gpt(prompt, api_key, max_tokens=50):
+def chat_with_gpt(prompt, api_key, max_tokens=100):
     # The URL for the ChatGPT API endpoint
     api_url = 'https://api.openai.com/v1/chat/completions'
 
