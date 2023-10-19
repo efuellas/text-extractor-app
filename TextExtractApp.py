@@ -128,21 +128,35 @@ if file is not None:
             input_bucket = AWS_BUCKET_NAME 
             input_key = "uploaded_file/{}".format(file.name)
             output_bucket = AWS_BUCKET_NAME
-
+            
+            col1, col2, col3 = st.columns(3)
+            
             try:
                 file_obj = s3.get_object(Bucket=input_bucket, Key=input_key)
                 file_extension = input_key.split('.')[-1].lower()
-
+                
                 if file_extension in ["jpg", "jpeg", "png"]:
                     st.write("### Image Viewer")
-                    st.image(file_obj["Body"].read(),  use_column_width=False, width=500)
+                    
+                    with col1:
+                        st.write(' ')
+                    with col2:
+                        st.image(file_obj["Body"].read(),  use_column_width=False, width=500)
+                    with col3:
+                        st.write(' ')
+                        
                 elif file_extension == "pdf":
                     st.write("### PDF Viewer")
 
-                    images = pdf_to_images(file_obj["Body"])
+                    with col1:
+                        st.write(' ')
+                    with col2:
+                        images = pdf_to_images(file_obj["Body"])
 
-                    for i, image in enumerate(images):
-                        st.image(image, use_column_width=False, width=500)
+                        for i, image in enumerate(images):
+                            st.image(image, use_column_width=False, width=500)
+                    with col3:
+                        st.write(' ')
                    
                 else:
                     st.error("Unsupported file type. Only images (jpg, png, jpeg) and PDFs are supported.")
