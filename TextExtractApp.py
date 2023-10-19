@@ -126,7 +126,7 @@ if file is not None:
 
                     #pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="850" type="application/pdf">'
 
-                    pdf_display = F'<iframe src="https://billing-statement-textract.s3.ap-southeast-1.amazonaws.com/uploaded_file/{file.name}" width="700" height="850" type="application/pdf">'
+                    pdf_display = F'<iframe src="https://{input_bucket}.s3-{AWS_REGION}.amazonaws.com/{input_key}" width="700" height="850" type="application/pdf">'
                     
 
                     st.markdown(pdf_display, unsafe_allow_html=True)
