@@ -124,7 +124,10 @@ if file is not None:
                     # with open(file_obj["Body"].read(),"rb") as f:
                     base64_pdf = base64.b64encode(file_obj["Body"].read()).decode('utf-8')
 
-                    pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="850" type="application/pdf">'
+                    #pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="850" type="application/pdf">'
+
+                    pdf_display = F'<iframe src="https://billing-statement-textract.s3.ap-southeast-1.amazonaws.com/uploaded_file/{file.name}" width="700" height="850" type="application/pdf">'
+                    
 
                     st.markdown(pdf_display, unsafe_allow_html=True)
                 else:
