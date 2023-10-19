@@ -129,15 +129,13 @@ if file is not None:
             input_key = "uploaded_file/{}".format(file.name)
             output_bucket = AWS_BUCKET_NAME
             
-            col1, col2, col3 = st.columns([1,6,1])
-            
             try:
                 file_obj = s3.get_object(Bucket=input_bucket, Key=input_key)
                 file_extension = input_key.split('.')[-1].lower()
                 
                 if file_extension in ["jpg", "jpeg", "png"]:
                     st.write("### Image Viewer")
-                    
+                    col1, col2, col3 = st.columns([1,6,1])
                     with col1:
                         st.write(' ')
                     with col2:
@@ -147,7 +145,7 @@ if file is not None:
                         
                 elif file_extension == "pdf":
                     st.write("### PDF Viewer")
-
+                    col1, col2, col3 = st.columns([1,6,1])
                     with col1:
                         st.write(' ')
                     with col2:
