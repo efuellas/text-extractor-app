@@ -179,7 +179,7 @@ if file is not None:
                 prompt = """{}
 
                     From the text above, answer the following questions:
-                    1. What type of ID is submitted? (usual IDs are Philippine Passport, Driver's License, Unified Multi-Purpose ID (UMID), Social Security System (SSS) ID, Government Service Insurance System (GSIS) ID, Philippine Postal ID, Voter's ID, Professional Regulation Commission (PRC) ID, Senior Citizen ID, Overseas Employment Certificate (OEC), National Bureau of Investigation (NBI) Clearance, Barangay ID, Police Clearance, Philippine Health Insurance Corporation (PhilHealth) ID, Home Development Mutual Fund (Pag-IBIG) ID, Taxpayer Identification Number (TIN) Card)
+                    1. What type of ID is submitted? (usual IDs are Philippine Passport, Driver's License, Unified Multi-Purpose ID (UMID), Social Security System (SSS) ID, Government Service Insurance System (GSIS) ID, Philippine Postal ID, Voter's ID, Professional Regulation Commission (PRC) ID, Senior Citizen ID, Overseas Employment Certificate (OEC), National Bureau of Investigation (NBI) Clearance, Barangay ID, Police Clearance, Philippine Health Insurance Corporation (PhilHealth) ID, Home Development Mutual Fund (Pag-IBIG) ID, Taxpayer Identification Number (TIN) Card, Pag-IBIG Loyalty Card)
                     2. What is the name of the Customer?
                     3. What is the address of the Customer?
 
