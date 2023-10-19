@@ -6,6 +6,10 @@ import requests
 import base64
 import json
 
+os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
+os.environ['AWS_BUCKET_NAME'] = st.secrets['AWS_BUCKET_NAME']
+os.environ['AWS_REGION'] = st.secrets['AWS_REGION']
+
 # AWS S3 Configuration
 AWS_BUCKET_NAME = os.environ['AWS_BUCKET_NAME']
 AWS_REGION = os.environ['AWS_REGION']
