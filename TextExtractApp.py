@@ -103,9 +103,9 @@ st.write("""---""")
 file = st.file_uploader("Upload a file", type=["pdf", "jpg", "png", "jpeg"])
 
 if file is not None:
-    if st.button("Upload to S3"):
+    if st.button("Process file"):
         if upload_file_to_s3(file, AWS_BUCKET_NAME, AWS_REGION):
-            st.success(f"File '{file.name}' has been uploaded to S3.")
+            st.success(f"File '{file.name}' is being processed.")
 
             input_bucket = AWS_BUCKET_NAME 
             input_key = "uploaded_file/{}".format(file.name)
@@ -201,4 +201,4 @@ if file is not None:
                 #          *Customer Address:* {}""".format(json_response['CustomerName'], json_response['CustomerAddress']))
 
         else:
-            st.error(f"File '{file.name}' failed to upload to S3.")
+            st.error(f"File '{file.name}' was not processed.")
