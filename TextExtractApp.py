@@ -141,7 +141,7 @@ if file is not None:
                     with col1:
                         st.write(' ')
                     with col2:
-                        st.image(file_obj["Body"].read())
+                        st.image(file_obj["Body"].read(), use_column_width=False, width=500)
                     with col3:
                         st.write(' ')
                         
@@ -151,7 +151,7 @@ if file is not None:
                     with col1:
                         st.write(' ')
                     with col2:
-                        images = pdf_to_images(file_obj["Body"])
+                        images = pdf_to_images(file_obj["Body"], use_column_width=False, width=550)
 
                         for i, image in enumerate(images):
                             st.image(image)
