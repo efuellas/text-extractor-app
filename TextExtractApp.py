@@ -5,6 +5,9 @@ from botocore.exceptions import NoCredentialsError
 import requests
 import base64
 import json
+import fitz  # PyMuPDF
+from PIL import Image
+from io import BytesIO
 
 
 # AWS S3 Configuration
@@ -95,6 +98,21 @@ def chat_with_gpt(prompt, api_key, max_tokens=100):
     data = response.json()
     answer = data['choices'][0]['message']['content']
     return answer
+
+def pdf_to_images(pdf_file):
+    doc = fitz.open(stream=pdf_file.read(), filetype="pdf")
+    zoom = 4
+    mat = fitz.Matrix(zoom, zoom)
+    image_list = []
+    count = 0
+
+    page = doc.load_page(0)
+    image_bytes = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom)).tobytes("ppm")
+    image = Image.open(BytesIO(image_bytes))
+    image_list.append(image)
+
+    doc.close()
+    return image_list
    
 st.write("""# Text Extractor Application""")
 st.write("""This application extracts the personal details from an ID photo or a billing statement PDF file.""")
@@ -120,22 +138,11 @@ if file is not None:
                     st.image(file_obj["Body"].read(),  use_column_width=True)
                 elif file_extension == "pdf":
                     st.write("### PDF Viewer")
-                    #st.write(file_obj["Body"].read())
 
-                    # with open(file_obj["Body"].read(),"rb") as f:
-                    base64_pdf = base64.b64encode(file_obj["Body"].read()).decode('utf-8')
-                    pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="850" type="application/pdf">'
-                    st.markdown(pdf_display, unsafe_allow_html=True)
-                    
-                    # s3_resource = boto3.resource('s3', region_name=AWS_REGION)
-                    # url = s3_resource.meta.client.generate_presigned_url(
-                    #     'get_object',
-                    #     Params={
-                    #         'Bucket': input_bucket,
-                    #         'Key': input_key
-                    #     },
-                    #     ExpiresIn=3600  # URL will expire in 1 hour (adjust as needed)
-                    # )
+                    images = pdf_to_images(file_obj["Body"])
+
+                    for i, image in enumerate(images):
+                        st.image(image, use_column_width=True)
                    
                 else:
                     st.error("Unsupported file type. Only images (jpg, png, jpeg) and PDFs are supported.")
