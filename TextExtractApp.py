@@ -6,7 +6,7 @@ import requests
 import base64
 import json
 from io import BytesIO
-from pdf import PdfFileReader
+from pypdf import PdfFileReader
 
 # AWS S3 Configuration
 AWS_BUCKET_NAME = st.secrets['AWS_BUCKET_NAME']
