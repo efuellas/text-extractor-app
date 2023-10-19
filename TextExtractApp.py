@@ -129,7 +129,7 @@ if file is not None:
             input_key = "uploaded_file/{}".format(file.name)
             output_bucket = AWS_BUCKET_NAME
             
-            col1, col2, col3 = st.columns(3)
+            col1, col2, col3 = st.columns([1,6,1])
             
             try:
                 file_obj = s3.get_object(Bucket=input_bucket, Key=input_key)
