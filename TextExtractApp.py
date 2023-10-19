@@ -136,7 +136,7 @@ if file is not None:
             response = documentTextDetect(input_bucket, input_key)
 
             # Example usage:
-            api_key = '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'  # Replace with your actual API key
+            api_key = os.environ['OPENAI_API_KEY']  # Replace with your actual API key
 
             if '.pdf' in file.name:
                 prompt = """{}
