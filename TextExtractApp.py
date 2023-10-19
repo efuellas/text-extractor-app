@@ -5,6 +5,8 @@ from botocore.exceptions import NoCredentialsError
 import requests
 import base64
 import json
+from io import BytesIO
+from PyPDF2 import PdfFileReader
 
 # AWS S3 Configuration
 AWS_BUCKET_NAME = st.secrets['AWS_BUCKET_NAME']
@@ -94,6 +96,18 @@ def chat_with_gpt(prompt, api_key, max_tokens=100):
     data = response.json()
     answer = data['choices'][0]['message']['content']
     return answer
+
+# Function to display a PDF from a URL
+def display_pdf_from_url(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        pdf_data = BytesIO(response.content)
+        pdf_reader = PdfFileReader(pdf_data)
+        for page_num in range(pdf_reader.numPages):
+            page = pdf_reader.getPage(page_num)
+            st.write(page.extractText())
+    else:
+        st.error("Unable to fetch the PDF from the provided URL.")
    
 st.write("""# Text Extractor Application""")
 st.write("""This application extracts the personal details from an ID photo or a billing statement PDF file.""")
@@ -122,9 +136,9 @@ if file is not None:
                     #st.write(file_obj["Body"].read())
 
                     # with open(file_obj["Body"].read(),"rb") as f:
-                    #base64_pdf = base64.b64encode(file_obj["Body"].read()).decode('utf-8')
-
+                    #base64_pdf = base64.b64encode(file_obj["Body"].read()).decode('utf-8')\
                     #pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="850" type="application/pdf">'
+                    #st.markdown(pdf_display, unsafe_allow_html=True)
                     
                     s3_resource = boto3.resource('s3', region_name=AWS_REGION)
                     url = s3_resource.meta.client.generate_presigned_url(
@@ -136,9 +150,9 @@ if file is not None:
                         ExpiresIn=3600  # URL will expire in 1 hour (adjust as needed)
                     )
         
-                    pdf_display = F'<iframe src="{url}" width="700" height="850" type="application/pdf"></iframe>'
+                    display_pdf_from_url(url)
 
-                    st.markdown(pdf_display, unsafe_allow_html=True)
+                   
                 else:
                     st.error("Unsupported file type. Only images (jpg, png, jpeg) and PDFs are supported.")
             except NoCredentialsError:
