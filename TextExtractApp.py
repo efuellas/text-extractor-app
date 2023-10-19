@@ -6,7 +6,7 @@ import requests
 import base64
 import json
 from io import BytesIO
-from PyPDF2 import PdfReader
+import fitz
 
 # AWS S3 Configuration
 AWS_BUCKET_NAME = st.secrets['AWS_BUCKET_NAME']
@@ -101,11 +101,12 @@ def chat_with_gpt(prompt, api_key, max_tokens=100):
 def display_pdf_from_url(url):
     response = requests.get(url)
     if response.status_code == 200:
-        pdf_data = BytesIO(response.content)
-        pdf_reader = PdfReader(pdf_data)
-        for page_num in range(len(reader.pages)):
-            page = pdf_reader.getPage(page_num)
-            st.write(page.extractText())
+        pdf_bytes = response.content
+        pdf_document = fitz.open("pdf", pdf_bytes)
+        for page_num in range(pdf_document.page_count):
+            page = pdf_document.load_page(page_num)
+            image = page.get_pixmap()
+            st.image(image, caption=f"Page {page_num + 1}")
     else:
         st.error("Unable to fetch the PDF from the provided URL.")
    
