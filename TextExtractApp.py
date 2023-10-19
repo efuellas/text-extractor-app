@@ -13,6 +13,7 @@ os.environ['AWS_REGION'] = st.secrets['AWS_REGION']
 # AWS S3 Configuration
 AWS_BUCKET_NAME = os.environ['AWS_BUCKET_NAME']
 AWS_REGION = os.environ['AWS_REGION']
+api_key = os.environ['OPENAI_API_KEY']
 
 s3 = boto3.client('s3', region_name=AWS_REGION)
 
@@ -139,8 +140,6 @@ if file is not None:
 
             response = documentTextDetect(input_bucket, input_key)
 
-            # Example usage:
-            api_key = os.environ['OPENAI_API_KEY']  # Replace with your actual API key
 
             if '.pdf' in file.name:
                 prompt = """{}
