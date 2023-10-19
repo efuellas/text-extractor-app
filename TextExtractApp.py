@@ -122,11 +122,21 @@ if file is not None:
                     #st.write(file_obj["Body"].read())
 
                     # with open(file_obj["Body"].read(),"rb") as f:
-                    base64_pdf = base64.b64encode(file_obj["Body"].read()).decode('utf-8')
+                    #base64_pdf = base64.b64encode(file_obj["Body"].read()).decode('utf-8')
 
                     #pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="850" type="application/pdf">'
-
-                    pdf_display = F'<iframe src="https://{input_bucket}.s3-{AWS_REGION}.amazonaws.com/{input_key}" width="700" height="850" type="application/pdf">'
+                    
+                    s3_resource = boto3.resource('s3', region_name=AWS_REGION)
+                    url = s3_resource.meta.client.generate_presigned_url(
+                        'get_object',
+                        Params={
+                            'Bucket': input_bucket,
+                            'Key': input_key
+                        },
+                        ExpiresIn=3600  # URL will expire in 1 hour (adjust as needed)
+                    )
+        
+                    pdf_display = F'<iframe src="{url}" width="700" height="850" type="application/pdf">'
                     
 
                     st.markdown(pdf_display, unsafe_allow_html=True)
