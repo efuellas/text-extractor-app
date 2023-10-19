@@ -7,8 +7,8 @@ import base64
 import json
 
 # AWS S3 Configuration
-AWS_BUCKET_NAME = "billing-statement-textract"
-AWS_REGION = "ap-southeast-1"
+AWS_BUCKET_NAME = os.environ['AWS_BUCKET_NAME']
+AWS_REGION = os.environ['AWS_REGION']
 
 s3 = boto3.client('s3', region_name=AWS_REGION)
 
@@ -35,7 +35,7 @@ def documentTextDetect(input_bucket, input_key, output_bucket=None):
 
     # Use Textract to extract text from the PDF document
     response = textract.start_document_text_detection(
-        DocumentLocation={'S3Object': {'Bucket': input_bucket, 'Name': input_key}}
+        DocumentLocation={'S3Object': {'': input_bucket, 'Name': input_key}}
     )
     
     # Get the JobId from the Textract response
@@ -105,9 +105,9 @@ if file is not None:
         if upload_file_to_s3(file, AWS_BUCKET_NAME, AWS_REGION):
             st.success(f"File '{file.name}' has been uploaded to S3.")
 
-            input_bucket = 'billing-statement-textract' 
+            input_bucket = AWS_BUCKET_NAME 
             input_key = "uploaded_file/{}".format(file.name)
-            output_bucket = 'billing-statement-textract'
+            output_bucket = AWS_BUCKET_NAME
 
             try:
                 file_obj = s3.get_object(Bucket=input_bucket, Key=input_key)
