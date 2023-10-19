@@ -137,7 +137,8 @@ if file is not None:
                     )
         
                     pdf_display = F'<embed src="{url}" width="700" height="850" type="application/pdf">'
-                    
+
+                    st.components.v1.html(f'<embed src="{url}" width="700" height="800" type="application/pdf">', width=800, height=800)
 
                     st.markdown(pdf_display, unsafe_allow_html=True)
                 else:
