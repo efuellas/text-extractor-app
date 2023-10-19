@@ -103,7 +103,7 @@ def display_pdf_from_url(url):
     if response.status_code == 200:
         pdf_data = BytesIO(response.content)
         pdf_reader = PdfReader(pdf_data)
-        for page_num in range(pdf_reader.numPages):
+        for page_num in range(len(reader.pages)):
             page = pdf_reader.getPage(page_num)
             st.write(page.extractText())
     else:
