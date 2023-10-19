@@ -136,9 +136,7 @@ if file is not None:
                         ExpiresIn=3600  # URL will expire in 1 hour (adjust as needed)
                     )
         
-                    pdf_display = F'<embed src="{url}" width="700" height="850" type="application/pdf">'
-
-                    st.components.v1.html(f'<embed src="{url}" width="700" height="800" type="application/pdf">', width=800, height=800)
+                    pdf_display = F'<iframe src="{url}" width="700" height="850" type="application/pdf"></iframe>'
 
                     st.markdown(pdf_display, unsafe_allow_html=True)
                 else:
