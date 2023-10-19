@@ -6,14 +6,10 @@ import requests
 import base64
 import json
 
-os.environ['OPENAI_API_KEY'] = st.secrets['OPENAI_API_KEY']
-os.environ['AWS_BUCKET_NAME'] = st.secrets['AWS_BUCKET_NAME']
-os.environ['AWS_REGION'] = st.secrets['AWS_REGION']
-
 # AWS S3 Configuration
-AWS_BUCKET_NAME = os.environ['AWS_BUCKET_NAME']
-AWS_REGION = os.environ['AWS_REGION']
-api_key = os.environ['OPENAI_API_KEY']
+AWS_BUCKET_NAME = st.secrets['AWS_BUCKET_NAME']
+AWS_REGION = st.secrets['AWS_REGION']
+OPENAI_API_KEY = st.secrets['OPENAI_API_KEY']
 
 s3 = boto3.client('s3', region_name=AWS_REGION)
 
@@ -40,7 +36,7 @@ def documentTextDetect(input_bucket, input_key, output_bucket=None):
 
     # Use Textract to extract text from the PDF document
     response = textract.start_document_text_detection(
-        DocumentLocation={'S3Object': {'': input_bucket, 'Name': input_key}}
+        DocumentLocation={'S3Object': {'Bucket': input_bucket, 'Name': input_key}}
     )
     
     # Get the JobId from the Textract response
@@ -140,7 +136,6 @@ if file is not None:
 
             response = documentTextDetect(input_bucket, input_key)
 
-
             if '.pdf' in file.name:
                 prompt = """{}
 
@@ -157,7 +152,7 @@ if file is not None:
                     4. Customer Address:
                     """.format(response['result'])
                 
-                response = chat_with_gpt(prompt, api_key)
+                response = chat_with_gpt(prompt, OPENAI_API_KEY)
 
                 st.write("""### Extracted text""")
                 st.write("{}".format(response))
@@ -185,7 +180,7 @@ if file is not None:
                      
                     """.format(response['result'])
                 
-                response = chat_with_gpt(prompt, api_key)
+                response = chat_with_gpt(prompt, OPENAI_API_KEY)
 
                 st.write("""### Extracted text""")
                 st.write("{}".format(response))
