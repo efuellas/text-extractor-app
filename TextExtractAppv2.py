@@ -3,10 +3,10 @@ import requests
 from botocore.exceptions import NoCredentialsError
 import streamlit as st
 
-
 # AWS S3 Configuration
-AWS_BUCKET_NAME = "billing-statement-textract"
-AWS_REGION = "ap-southeast-1"
+AWS_BUCKET_NAME = st.secrets['AWS_BUCKET_NAME']
+AWS_REGION = st.secrets['AWS_REGION']
+API_URL = st.secrets['API_URL']
 
 s3 = boto3.client('s3', region_name=AWS_REGION)
 
@@ -24,9 +24,7 @@ def upload_file_to_s3(file, bucket_name, region):
         return False
     
 
-def call_text_extract_api(bucket, key):
-
-    api_url = 'https://h3oxjsbhn0.execute-api.ap-southeast-1.amazonaws.com/dev/extract-text'
+def call_text_extract_api(api_url, bucket, key):
 
     # Make a POST request to the API
     response = requests.post(
@@ -72,7 +70,7 @@ if file is not None:
                         st.write(' ')
 
                     
-                    response = call_text_extract_api(input_bucket, input_key)
+                    response = call_text_extract_api(API_URL, input_bucket, input_key)
                     st.write("""### Extracted text""")
                     st.write(response['result'])
                 
